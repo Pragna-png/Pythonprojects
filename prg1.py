@@ -1,3 +1,4 @@
+print("Updated Zomato Bill")
 print("====== ZOMATO ORDER RECEIPT ======")
 
 restaurant = input("Enter Restaurant Name: ")
@@ -39,5 +40,5 @@ print("--------------------------------")
 print("TOTAL      : Rs", total)
 print("================================")
 print("      THANK YOU! VISIT AGAIN")
-print("Updated Zomato Bill Calculator")
+g
 
