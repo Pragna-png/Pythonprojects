@@ -40,5 +40,5 @@ print("--------------------------------")
 print("TOTAL      : Rs", total)
 print("================================")
 print("      THANK YOU! VISIT AGAIN")
-g
+
 
