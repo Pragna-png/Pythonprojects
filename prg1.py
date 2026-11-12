@@ -1,4 +1,4 @@
-print("Updated Zomato Bill")
+print("Zomato Bill")
 print("====== ZOMATO ORDER RECEIPT ======")
 
 restaurant = input("Enter Restaurant Name: ")
