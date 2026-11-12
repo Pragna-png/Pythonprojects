@@ -1,50 +1,131 @@
-print("===== ZOMATO BILL CALCULATOR =====")
+from datetime import datetime, date
 
-# Get restaurant details
-restaurant = input("Enter restaurant name: ")
+print("=" * 45)
+print("       INDIAN RAILWAY TICKET BOOKING")
+print("=" * 45)
 
-# Get order details
-items = int(input("Enter number of items: "))
-price = float(input("Enter price per item: "))
+# Available routes and seats
+availability = {
+    "Mumbai-Delhi": 3,
+    "Delhi-Bangalore": 12
+}
 
-# Get food type
-food_type = input("Enter food type (Veg/Non-Veg): ").lower()
+# Base ticket prices
+prices = {
+    "Mumbai-Delhi": 1200,
+    "Delhi-Bangalore": 1500
+}
 
-# Calculate subtotal
-subtotal = items * price
+# Get passenger details
+source = input("Enter source city: ").strip().title()
+destination = input("Enter destination city: ").strip().title()
 
-# Calculate GST (18%)
-gst = subtotal * 0.18
+travel_date = input("Enter travel date (YYYY-MM-DD): ")
 
-# Delivery charge
-delivery = 40
+age = int(input("Enter passenger age: "))
 
-# Food surcharge
-if food_type == "veg":
-    surcharge = 0
-elif food_type == "non-veg":
-    surcharge = 30
+# Create route name
+route = source + "-" + destination
+
+print("\nChecking ticket availability...")
+
+# Check route availability
+if route in availability:
+
+    seats = availability[route]
+    base_price = prices[route]
+
+    print("Route available!")
+
+    # Calculate age discount
+    discount = 0
+
+    if age >= 60:
+        discount = base_price * 0.40
+        passenger_type = "Senior citizen"
+
+    elif age < 12:
+        discount = base_price * 0.50
+        passenger_type = "Child"
+
+    else:
+        passenger_type = "Adult"
+
+    # Calculate weekend surcharge
+    date_object = datetime.strptime(
+        travel_date, "%Y-%m-%d"
+    ).date()
+
+    weekend_charge = 0
+
+    if date_object.weekday() == 5 or date_object.weekday() == 6:
+        weekend_charge = (base_price - discount) * 0.10
+
+    # Calculate Tatkal charge
+    today = date.today()
+    days_left = (date_object - today).days
+
+    tatkal_charge = 0
+
+    if days_left >= 0 and days_left <= 2:
+        tatkal_charge = base_price * 0.30
+
+    # Calculate total price
+    total = (
+        base_price
+        - discount
+        + weekend_charge
+        + tatkal_charge
+    )
+
+    # Seat availability warning
+    print("\nChecking seats...")
+
+    if seats < 5:
+        print("Only", seats, "seats left! Book fast!")
+
+    else:
+        print(seats, "seats available.")
+
+    # Display ticket details
+    print("\n" + "=" * 45)
+    print("             JOURNEY DETAILS")
+    print("=" * 45)
+
+    print("Journey       :", source, "->", destination)
+    print("Date          :", date_object.strftime("%A"))
+    print("Passenger     :", passenger_type)
+    print("Base price    : Rs", int(base_price))
+    print("Age discount  :-Rs", int(discount))
+    print("Weekend       : +Rs", int(weekend_charge))
+    print("Tatkal charge : +Rs", int(tatkal_charge))
+    print("-" * 45)
+    print("TOTAL         : Rs", int(total))
+    print("Seats left    :", seats)
+
+    # Payment simulation
+    print("\n" + "=" * 45)
+    print("              PAYMENT")
+    print("=" * 45)
+
+    payment = int(input("Enter payment amount: Rs "))
+
+    if payment == total:
+        print("Payment successful!")
+        print("Your ticket is booked.")
+
+    elif payment > total:
+        balance = payment - total
+        print("Payment successful!")
+        print("Extra amount: Rs", int(balance))
+        print("Your ticket is booked.")
+
+    else:
+        balance = total - payment
+        print("Insufficient payment!")
+        print("Please pay Rs", int(balance), "more.")
+
 else:
-    surcharge = 0
-    print("Invalid food type. No surcharge added.")
+    print("Sorry! This route is not available.")
 
-# Calculate total
-total = subtotal + gst + delivery + surcharge
-
-# Print formatted receipt
-print("\n====================================")
-print("       ZOMATO ORDER RECEIPT")
-print("====================================")
-
-print(f"Restaurant      : {restaurant}")
-print(f"Food Type       : {food_type.upper()}")
-print(f"Items           : {items} x Rs {price:.2f} each")
-print(f"Subtotal        : Rs {subtotal:.2f}")
-print(f"GST (18%)       : Rs {gst:.2f}")
-print(f"Delivery        : Rs {delivery:.2f}")
-print(f"Surcharge       : Rs {surcharge:.2f}")
-
-print("------------------------------------")
-print(f"TOTAL           : Rs {total:.2f}")
-print("====================================")
-print("      THANK YOU! VISIT AGAIN")
+print("\nThank you for booking with Indian Railways!")
