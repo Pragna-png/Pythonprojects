@@ -1,4 +1,3 @@
-
 # Student Management System
 
 # 1. Variables and Datatypes
